@@ -19,8 +19,8 @@
   <style>
 .faq {
   max-width: 900px;
-  margin: 50px auto;
-  padding: 0 20px;
+  margin: 40px auto;
+  padding: 0 16px;
 }
 .faq h2 {
   text-align: center;
@@ -30,7 +30,7 @@
   color: var(--primary);
 }
 
-/* Список FAQ */
+/* FAQ список через flex */
 .faq-list {
   display: flex;
   flex-direction: column;
@@ -48,7 +48,7 @@
   box-shadow: var(--shadow);
   overflow: hidden;
 }
-body.dark .faq-item { background: var(--glass-dark);  }
+body.dark .faq-item { background: var(--glass-dark); }
 
 .faq-question {
   font-size: 1rem;
@@ -61,6 +61,7 @@ body.dark .faq-item { background: var(--glass-dark);  }
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 8px 0;
 }
 .faq-question::after {
   content: "▾";
@@ -82,15 +83,21 @@ body.dark .faq-item { background: var(--glass-dark);  }
   line-height: 1.5;
 }
 .faq-item.active .faq-answer {
-  max-height: 200px;
+  max-height: 500px; /* щоб було для будь-якої довжини тексту */
   opacity: 1;
   padding-top: 10px;
 }
 
-/* Адаптив */
+/* Адаптивність під мобільні */
+@media(max-width:768px){
+  .faq h2{ font-size:1.7rem; }
+  .faq-answer{ font-size:0.93rem; }
+  .faq-question{ font-size:0.95rem; }
+}
 @media(max-width:480px){
-  .faq h2 { font-size:1.5rem; }
-  .faq-answer { font-size:0.9rem; }
+  .faq h2{ font-size:1.5rem; }
+  .faq-answer{ font-size:0.9rem; line-height:1.4; }
+  .faq-item{ padding:12px 16px; }
 }
 </style>
   
@@ -280,19 +287,19 @@ body.dark .filebtn { background: var(--glass-dark); }
     <div class="faq-item">
       <button class="faq-question">Як додати шум на фото?</button>
       <div class="faq-answer">
-        Натисніть "Обрати фото", завантажте зображення, налаштуйте інтенсивність шуму та натисніть "Накласти".
+        Натисніть "Обрати фото", завантажте зображення, налаштуйте інтенсивність шуму та натисніть "Накласти". Фото обробляється локально.
       </div>
     </div>
     <div class="faq-item">
       <button class="faq-question">Чи зберігаються фото на сервері?</button>
       <div class="faq-answer">
-        Ні, обробка відбувається локально у браузері, нічого не передається на сервер.
+        Ні, обробка відбувається прямо у браузері, файли не передаються на сервер.
       </div>
     </div>
     <div class="faq-item">
       <button class="faq-question">Як завантажити оброблене фото?</button>
       <div class="faq-answer">
-        Натисніть активну кнопку "Завантажити" після накладення шуму, щоб зберегти фото у форматі PNG.
+        Після накладення шуму активується кнопка "Завантажити", щоб зберегти зображення.
       </div>
     </div>
     <div class="faq-item">
@@ -303,7 +310,7 @@ body.dark .filebtn { background: var(--glass-dark); }
     </div>
   </div>
 </section>
-  <script>
+<script>
 // FAQ toggle
 document.querySelectorAll('.faq-item').forEach(item => {
   item.querySelector('.faq-question').addEventListener('click', () => {
