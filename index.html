@@ -48,7 +48,7 @@
   box-shadow: var(--shadow);
   overflow: hidden;
 }
-body.dark .faq-item { background: var(--glass-dark); }
+body.dark .faq-item { background: var(--glass-dark);  }
 
 .faq-question {
   font-size: 1rem;
@@ -106,7 +106,7 @@ body.dark .faq-item { background: var(--glass-dark); }
   --shadow: 0 8px 32px rgba(0,0,0,0.25);
 }
 body {
-  margin:0;
+  margin:5% 0 0 0;
   font-family: 'Segoe UI', sans-serif;
   display:flex;
   align-items:center;
@@ -115,6 +115,8 @@ body {
   background: linear-gradient(135deg,#e0e7ff,#fef3c7);
   color: var(--text-light);
   transition: background 0.4s,color 0.4s;
+  flex-wrap: wrap;
+
 }
 body.dark {
   background: linear-gradient(135deg,#0f172a,#1e293b);
