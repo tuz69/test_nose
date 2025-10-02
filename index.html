@@ -1,34 +1,125 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uk">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Накладання шуму на фото – онлайн інструмент</title>
 <meta name="description" content="Простий онлайн-сервіс для додавання шуму на фото. Регулюй інтенсивність шуму, отримуй прев’ю та завантажуй результат одразу на свій пристрій.">
+<meta name="keywords" content="додати шум на фото, онлайн шум фото, редагування фото, шум, онлайн редактор, фото інструмент, накладення шуму">
 
+<!-- Favicon -->
+<link rel="icon" href="icons/favicon.ico" type="image/x-icon">
+<link rel="icon" href="icons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="icons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" sizes="180x180">
+<link rel="mask-icon" href="icons/safari-pinned-tab.svg" color="#4f46e5">
+<meta name="msapplication-TileColor" content="#4f46e5">
+<meta name="msapplication-TileImage" content="icons/mstile-150x150.png">
+
+  <style>
+.faq {
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+.faq h2 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: var(--primary);
+}
+
+/* Список FAQ */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* FAQ елемент */
+.faq-item {
+  background: var(--glass-light);
+  backdrop-filter: blur(12px);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+body.dark .faq-item { background: var(--glass-dark); }
+
+.faq-question {
+  font-size: 1rem;
+  font-weight: 600;
+  color: inherit;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.faq-question::after {
+  content: "▾";
+  font-size: 1rem;
+  transition: transform 0.3s ease;
+}
+.faq-item.active .faq-question::after {
+  transform: rotate(-180deg);
+}
+
+/* Відповідь */
+.faq-answer {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  transition: all 0.4s ease;
+  color: inherit;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.faq-item.active .faq-answer {
+  max-height: 200px;
+  opacity: 1;
+  padding-top: 10px;
+}
+
+/* Адаптив */
+@media(max-width:480px){
+  .faq h2 { font-size:1.5rem; }
+  .faq-answer { font-size:0.9rem; }
+}
+</style>
+  
 <style>
-/* === Базові стилі === */
 :root {
-  --primary: #4dabf7;
+  --primary: #4f46e5;
   --accent: #0ea5a4;
-  --glass-light: rgba(255,255,255,0.8);
-  --glass-dark: rgba(255,255,255,0.05);
-  --radius: 12px;
-  --shadow: 0 4px 12px rgba(0,0,0,0.1);
+  --glass-light: rgba(255, 255, 255, 0.2);
+  --glass-dark: rgba(30, 41, 59, 0.5);
+  --text-light: #111;
+  --text-dark: #f1f5f9;
+  --radius: 16px;
+  --shadow: 0 8px 32px rgba(0,0,0,0.25);
 }
 body {
   margin:0;
-  font-family: system-ui, sans-serif;
-  background:#f9f9f9;
-  color:#222;
-  transition: background .4s, color .4s;
+  font-family: 'Segoe UI', sans-serif;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  background: linear-gradient(135deg,#e0e7ff,#fef3c7);
+  color: var(--text-light);
+  transition: background 0.4s,color 0.4s;
 }
 body.dark {
-  background:#121212;
-  color:#f1f1f1;
+  background: linear-gradient(135deg,#0f172a,#1e293b);
+  color: var(--text-dark);
 }
-
-/* === Theme toggle button === */
 .theme-toggle {
   position: fixed;
   top: 16px;
@@ -36,76 +127,25 @@ body.dark {
   padding: 8px 16px;
   border-radius: 20px;
   background: var(--glass-light);
-  border:1px solid rgba(0,0,0,0.1);
+  border: 1px solid rgba(255,255,255,0.3);
   cursor: pointer;
-  font-size:14px;
+  font-size: 14px;
   backdrop-filter: blur(10px);
   transition: all 0.4s;
 }
-body.dark .theme-toggle {
-  background: var(--glass-dark);
-  border:1px solid rgba(255,255,255,0.2);
-}
+body.dark .theme-toggle { background: var(--glass-dark); border:1px solid rgba(255,255,255,0.2); }
 
-/* === Hero === */
-.hero {
-  text-align:center;
-  padding:60px 20px 40px;
-}
-.hero h1 { font-size:2.2rem; margin-bottom:12px; }
-.hero p { font-size:1rem; opacity:.85; margin-bottom:20px; }
-.btn-apply {
-  background: var(--primary);
-  color: #fff;
-  border:none;
-  padding:12px 24px;
-  border-radius: var(--radius);
-  cursor:pointer;
-  font-size:1rem;
-  transition: background .3s ease;
-}
-.btn-apply:hover { background:#3993e0; }
-
-/* === Features через flex === */
-.features {
-  display:flex;
-  justify-content:center;
-  gap:20px;
-  flex-wrap:wrap;
-  padding: 0 20px 40px;
-}
-.feature {
-  flex: 1 1 260px;
-  max-width:300px;
-  background: var(--glass-light);
-  backdrop-filter: blur(8px);
-  border-radius: var(--radius);
-  padding:24px;
-  box-shadow: var(--shadow);
-  text-align:center;
-  transition: all .4s;
-}
-.feature:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 28px rgba(0,0,0,0.2);
-}
-.feature h3 { font-size:1.2rem; margin-bottom:8px; color: var(--primary); }
-.feature p { font-size:.95rem; opacity:.85; }
-body.dark .feature { background: var(--glass-dark); }
-
-/* === Контент блок (твій існуючий card) === */
 .card {
   width:920px;
   max-width:96%;
-  display:flex;
-  flex-direction: column;
+  display:grid;
+  grid-template-columns:1fr 360px;
   gap:20px;
   padding:24px;
   border-radius: var(--radius);
   background: var(--glass-light);
   box-shadow: var(--shadow);
   backdrop-filter: blur(12px);
-  margin:0 auto 40px;
   transition: all 0.4s;
 }
 body.dark .card { background: var(--glass-dark); }
@@ -157,51 +197,40 @@ body.dark .filebtn { background: var(--glass-dark); }
 
 .slider { width:100%; }
 
-.btn-apply-main { background: var(--primary); color:#fff }
+.btn-apply { background: var(--primary); color:#fff }
 .btn-download { background: var(--accent); color:#fff }
 .btn-muted { background: rgba(255,255,255,0.2); color: inherit; }
 .btn-disabled { opacity:.5; cursor:not-allowed; }
 
-/* === Адаптив === */
-@media(max-width:860px){.card{flex-direction: column;}}
-@media(max-width:480px){
-  .hero{padding:40px 10px;}
-  .hero h1{font-size:1.5rem;}
-  .hero p{font-size:.9rem;}
-  .feature{padding:18px; max-width:100%;}
-  .card{padding:16px;}
+.noise-buttons { display:flex; justify-content:center; gap:8px; margin-top:8px; }
+
+#hint { font-size:13px; color:rgba(0,0,0,100); margin-top:12px; }
+
+#viewer {
+  position: fixed;
+  left:0; top:0; width:100%; height:100%;
+  display:none; align-items:center; justify-content:center;
+  background: rgba(0,0,0,0.7);
+  z-index:9999;
 }
+.viewer-wrap {
+  position:relative;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(12px);
+  padding:12px;
+  border-radius: var(--radius);
+  max-width:92%; max-height:92%;
+  overflow:hidden;
+}
+.viewer-wrap img { display:block; max-width:100%; max-height:80vh; border-radius: var(--radius); }
+#glass { position:absolute; width:160px; height:160px; border-radius:50%; box-shadow:0 6px 18px rgba(0,0,0,0.35); border:3px solid rgba(255,255,255,0.9); pointer-events:none; display:none; background-repeat:no-repeat; }
+.viewer-close { position:absolute; right:8px; top:8px; background:rgba(255,255,255,0.3); border:0; padding:6px 8px; border-radius:6px; cursor:pointer; }
+
+@media(max-width:860px){.card{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
-<!-- Theme toggle -->
 <button class="theme-toggle" id="themeToggle">🌙 Темна тема</button>
-
-<!-- Hero -->
-<header class="hero">
-  <h1>Накладання шуму на фото</h1>
-  <p>Онлайн інструмент для швидкої обробки фото з попереднім переглядом та завантаженням результату.</p>
-  <button class="btn-apply" onclick="document.getElementById('file').click()">Спробувати зараз</button>
-</header>
-
-<!-- Features -->
-<section class="features">
-  <div class="feature">
-    <h3>Швидко</h3>
-    <p>Завантажуй фото й отримуй результат миттєво без зайвих налаштувань.</p>
-  </div>
-  <div class="feature">
-    <h3>Просто</h3>
-    <p>Зручний інтерфейс – регулюй шум, переглядай та завантажуй у пару кліків.</p>
-  </div>
-  <div class="feature">
-    <h3>Безпечно</h3>
-    <p>Усе відбувається прямо у браузері – жодних завантажень на сервер.</p>
-  </div>
-</section>
-
-<!-- === Main card (твій існуючий контент) === -->
 <div class="card">
   <div class="preview" id="preview">
     <canvas id="canvas"></canvas>
@@ -226,7 +255,7 @@ body.dark .filebtn { background: var(--glass-dark); }
     </div>
     <div class="panel">
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button id="apply" class="btn btn-apply-main">Накласти</button>
+        <button id="apply" class="btn btn-apply">Накласти</button>
         <button id="clearNoise" class="btn btn-muted">Очистити шум</button>
         <button id="viewBtn" class="btn">Переглянути</button>
         <button id="download" class="btn btn-download btn-disabled" disabled>Завантажити</button>
@@ -235,7 +264,6 @@ body.dark .filebtn { background: var(--glass-dark); }
   </div>
 </div>
 
-<!-- Viewer -->
 <div id="viewer">
   <div class="viewer-wrap" id="viewerWrap">
     <button class="viewer-close" id="closeViewer">✕</button>
@@ -243,7 +271,43 @@ body.dark .filebtn { background: var(--glass-dark); }
     <div id="glass"></div>
   </div>
 </div>
-
+<section class="faq">
+  <h2>Поширені питання</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-question">Як додати шум на фото?</button>
+      <div class="faq-answer">
+        Натисніть "Обрати фото", завантажте зображення, налаштуйте інтенсивність шуму та натисніть "Накласти".
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Чи зберігаються фото на сервері?</button>
+      <div class="faq-answer">
+        Ні, обробка відбувається локально у браузері, нічого не передається на сервер.
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Як завантажити оброблене фото?</button>
+      <div class="faq-answer">
+        Натисніть активну кнопку "Завантажити" після накладення шуму, щоб зберегти фото у форматі PNG.
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Як скасувати накладений шум?</button>
+      <div class="faq-answer">
+        Використайте кнопку "Очистити шум", щоб повернути оригінальне фото.
+      </div>
+    </div>
+  </div>
+</section>
+  <script>
+// FAQ toggle
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.querySelector('.faq-question').addEventListener('click', () => {
+    item.classList.toggle('active');
+  });
+});
+</script>
 <script>
 const fileInput = document.getElementById('file');
 const canvas = document.getElementById('canvas');
